@@ -17,6 +17,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -47,15 +51,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
 @Composable
-fun DadoaBota (modifier: Modifier= Modifier){
-    Box(modifier= modifier.fillMaxSize()){
+fun DadoaBota(modifier: Modifier = Modifier) {
+    var emaitza by remember { mutableStateOf(1) }
+
+    val irudia = when (emaitza) {
+        1 -> R.drawable.dadoa_1
+        2 -> R.drawable.dadoa_2
+        3 -> R.drawable.dadoa_3
+        4 -> R.drawable.dadoa_4
+        5 -> R.drawable.dadoa_5
+        else -> R.drawable.dadoa_6
+    }
+
+    Box(modifier = modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.casino),
             contentDescription = null,
-            modifier=modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
         Text(
@@ -63,35 +76,41 @@ fun DadoaBota (modifier: Modifier= Modifier){
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Green,
-            modifier= modifier
-                .align (Alignment.TopStart)
+            modifier = Modifier
+                .align(Alignment.TopStart)
                 .padding(start = 80.dp, top = 150.dp)
         )
+
         Box(
-            modifier=modifier
+            modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 220.dp)
                 .size(200.dp)
-                .background(Color.DarkGray.copy(0.5f),
-                 shape = RoundedCornerShape(16.dp))
-        )
+                .background(Color.DarkGray.copy(0.5f), RoundedCornerShape(16.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = irudia),
+                contentDescription = "Dadoa: $emaitza",
+                modifier = Modifier.size(150.dp)
+            )
+        }
         Text(
-            text = "Zenbakia: ",
+            text = "Zenbakia: $emaitza",
             fontSize = 18.sp,
-            fontWeight = FontWeight.Normal,
             color = Color.Black,
-            modifier= modifier
-                .align (Alignment.TopStart)
+            modifier = Modifier
+                .align(Alignment.TopStart)
                 .padding(start = 80.dp, top = 450.dp)
         )
-
-        Button(onClick ={ },
+        Button(
+            onClick = { emaitza = (1..6).random() },
             colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
-            modifier =  Modifier
+            modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 500.dp),
+                .padding(top = 500.dp)
         ) {
-            Text ("Dadoak bota")
+            Text("Dadoak bota")
         }
     }
 }
